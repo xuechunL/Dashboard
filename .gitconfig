@@ -1,0 +1,7 @@
+[user]
+	name = leixuechun
+	email = xuechunlei922@gmail.com
+[push]
+	default = matching
+[core]
+	excludesfile = ./.gitignore_global

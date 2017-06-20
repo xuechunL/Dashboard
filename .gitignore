@@ -4,4 +4,6 @@ benchbot/public/
 benchbot/package-lock.json
 .idea/workspace.xml
 .idea/
+.DS_Store
+*/.DS_Store
 
