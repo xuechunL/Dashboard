@@ -1,0 +1,7 @@
+benchbot/node_modules/
+benchbot/build/
+benchbot/public/
+benchbot/package-lock.json
+.idea/workspace.xml
+.idea/
+
