@@ -82,6 +82,10 @@
       color: $brand-info;
     }
   }
+  .toTop {
+    float: right;
+    margin-top: 20px;
+  }
 }
 
 body:not(.top-nav) {

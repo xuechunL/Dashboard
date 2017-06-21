@@ -3,20 +3,7 @@ import classNames from 'classnames';
 
 const url = '/benchbot/bench/job/';
 
-class JobsTable extends Component {
-  constructor(props) {
-      super(props);
-
-      this.toggle = this.toggle.bind(this);
-  }
-
-  toggle(item,index) {
-    this.props.jobs[index].sel = !item.sel;
-  }
-
-  compare() {
-    this.props.toCompare(this.props.jobs);
-  }
+class SelJobsTable extends Component {
 
   getStatusClass(status){
     return classNames({
@@ -41,7 +28,6 @@ class JobsTable extends Component {
               <th>Status</th>
               <th>Packages</th>
               <th>View More</th>
-              <th className="text-center">Compare</th>
             </tr>
           </thead>
           <tbody>          
@@ -74,23 +60,16 @@ class JobsTable extends Component {
                             <td>
                               <a href={url+item.id+'?detail=1'} target="_blank"> details </a>
                             </td>
-                            <td className="text-center">
-                              <label className="checkbox-inline">
-                                <input type="checkbox" value={item.sel} onChange={() => { this.toggle(item,index); }} />
-                              </label>
-                            </td>
                     </tr>
                   )
                 )
               }
           </tbody>
         </table>
-
-        <button type="button" className="btn btn-primary compare" onClick={() => { this.compare() }}><i className="fa fa-magic"></i>&nbsp; Go To Compare</button>
       </div>
 
     )
   }
 }
 
-export default JobsTable;
+export default SelJobsTable;

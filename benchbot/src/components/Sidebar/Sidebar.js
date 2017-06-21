@@ -23,7 +23,7 @@ class Sidebar extends Component {
         <nav className="sidebar-nav">
           <ul className="nav">
             <li className="nav-item">
-              <Link to={'/overview'} className="nav-link" activeClassName="active"> Overview </Link>
+              <Link to={'/overview'} className="nav-link" activeClassName="active"> Dashboard </Link>
             </li>
           </ul>
         </nav>

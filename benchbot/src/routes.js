@@ -7,8 +7,8 @@ import Dashboard from './views/Dashboard/';
 
 export default (
   <Router history={hashHistory}>
-    <Route path="/" name="Home" component={Full}>
-      <IndexRoute component={Dashboard}/>
+    <Route path="/" name="Dashboard" component={Full}>
+    	<IndexRoute component={Dashboard}/>
       <Route path="overview" name="overview" component={Dashboard}/>
     </Route>
   </Router>

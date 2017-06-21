@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import axios from 'axios';
-import Compare from '../Components/Compare/';
+import Compare from '../Components/Compare/Compare';
 import JobsTable from '../Components/Table/JobsTable';
 
 // online
-const urlJoblist = '/benchbot/bench/history?detail=1';
+const urlJoblist = '/benchbot/bench/history';
+const urlComList = '/benchbot/bench/jobs/';
 // local
-// const urlJoblist = 'http://localhost:3000/benchbot/bench/history?detail=1';
+// const urlJoblist = 'http://localhost:3000/benchbot/bench/history';
+// const urlComList = 'http://localhost:3000/benchbot/bench/jobs/';
 
 // GetJson
 var getJSON = function(url) {
   var promise = new Promise(function(resolve, reject){
     axios({
      method:'get',
-     url: urlJoblist,
+     url: url,
      headers: {
          'Content-Type': 'application/x-www-form-urlencoded',
          }
@@ -58,15 +60,20 @@ class Dashboard extends Component {
       jobs: newjobs
     });
 
-  	this.getSelJobs();
+    var ids = [];
+    newjobs.map((item, index) => {
+      if(item.sel)
+        ids.push(item.id)
+    })
+    console.log(ids)
+
+  	this.getCompareResult(ids);
   }
 
   getJobs() {
-	// Make a request for all jobs history
+	 // Make a request for all jobs history
 	 getJSON(urlJoblist).then(function(json) {
-		  console.log(json);
-      
-		  this.addSelectTags(json);
+		  this.addSelectTags(json.reverse());
 		}.bind(this), function(error) {
 		  console.error('出错了', error);
 		});
@@ -84,38 +91,36 @@ class Dashboard extends Component {
       });
   }
 
-  getSelJobs() {
-    var selJobs = [];
-  	selJobs = this.state.jobs.filter(job => {
-  		if(job.sel)
-  			return job;
-  	});
-  	
-  	this.setState({
-      selJobs: selJobs,
-      loading: false
+  getCompareResult(ids) {
+    // 异步请求获取 compare 结果 
+    getJSON(urlComList+ids.join(',')).then(function(json) {
+      // console.log(json)
+      this.setState({
+        selJobs: json.reverse() || [],
+        loading: false
+      });
+    }.bind(this), function(error) {
+      console.error('出错了', error);
     });
   }
 
   render() {
     return (
       <div className="animated fadeIn dashboard">
+        <div id="top"></div>
         <div className="history">
         	<h1>Jobs History</h1>
         	<JobsTable jobs={this.state.jobs || []} toCompare={this.toCompare} />
         </div>
-        <div className="result">
-          <div className={classnames({ loading: this.state.loading },{ hide: !this.state.loading })}>
-              <div className="sk-folding-cube">
-              <div className="sk-cube1 sk-cube"></div>
-              <div className="sk-cube2 sk-cube"></div>
-              <div className="sk-cube4 sk-cube"></div>
-              <div className="sk-cube3 sk-cube"></div>
-            </div>
+        <div className={classnames({ loading: this.state.loading },{ hide: !this.state.loading })}>
+          <div className="sk-folding-cube">
+            <div className="sk-cube1 sk-cube"></div>
+            <div className="sk-cube2 sk-cube"></div>
+            <div className="sk-cube4 sk-cube"></div>
+            <div className="sk-cube3 sk-cube"></div>
           </div>
-        	<h1>Compare Results</h1>
-    		  <Compare selJobs={this.state.selJobs} />
         </div>
+        <Compare selJobs={this.state.selJobs} />
       </div>
     )
   }
